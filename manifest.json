@@ -1,0 +1,20 @@
+{
+    "description": "Lilac is a Firefox Web Extension that provides enhancement to popular video websites",
+    "manifest_version": 2,
+    "name": "Lilac",
+    "version": "0.0.1",
+    "homepage_url": "https://github.com/lb3dev/lilac",
+    "web_accessible_resources": [
+        "content_scripts/youtube/channel.js",
+        "content_scripts/youtube/watch.js",
+        "content_scripts/youtube/navigation.js"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["*://*.youtube.com/*"],
+            "js": ["content_scripts/youtube/inject.js"],
+            "run_at": "document_end"
+        }
+    ]
+}
+  

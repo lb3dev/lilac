@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "web-ext run --keep-profile-changes --firefox-profile=web-ext --firefox=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\""
+  },
+  "devDependencies": {
+    "web-ext": "^6.5.0"
+  }
+}
