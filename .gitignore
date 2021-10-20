@@ -120,3 +120,4 @@ dist
 # Project specific
 build/
 web-ext-artifacts/
+.web-extension-id
