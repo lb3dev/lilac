@@ -1,5 +1,5 @@
 module.exports = {
-    artifactsDir: 'build/',
+    artifactsDir: 'dist/',
 
     build: {
         overwriteDest: true
