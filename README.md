@@ -20,14 +20,19 @@ winget install --id Mozilla.FirefoxDeveloperEdition
 
 Install npm dependencies
 
-```powershell
+```shell
 npm ci
 ```
 
 Run extension as temporary with Firefox Developer Edition executable (with specified custom Firefox profile "web-ext"):
 
-```powershell
+```shell
 npm run start
+```
+
+Build and sign extension using web-ext
+```shell
+web-ext sign --config=config.js --api-key=... --api-secret=...
 ```
 
 Features
