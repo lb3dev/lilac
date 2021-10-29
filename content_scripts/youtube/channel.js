@@ -1,6 +1,8 @@
 // Anonymous function invoke to avoid polluting global variable namespace in the original page context
 
 (() => {
+    'use strict';
+
     function getChannelNavigateUrl(url, tab) {
         let paths = url.split('/');
         if (paths.length === 3) {

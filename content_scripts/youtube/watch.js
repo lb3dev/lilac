@@ -1,6 +1,8 @@
 // Anonymous function invoke to avoid polluting global variable namespace in the original page context
 
 (() => {
+    'use strict';
+
     function theaterMode() {
         const watchFlexy = _lilac_listener.getWatchFlexy();
         if (watchFlexy && !watchFlexy.theaterRequested_) {

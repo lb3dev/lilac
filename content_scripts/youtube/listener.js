@@ -1,4 +1,6 @@
 const _lilac_listener = (() => {
+    'use strict';
+    
     // App elements
     let watchFlexy = null;
     let watchCommentsRenderer = null;

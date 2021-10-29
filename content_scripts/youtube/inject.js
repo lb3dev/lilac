@@ -1,4 +1,6 @@
 (() => {
+    'use strict';
+
     function injectScript(path) {
         const script = document.createElement('script');
         script.src = browser.runtime.getURL(path);

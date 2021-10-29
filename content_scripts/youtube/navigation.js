@@ -1,4 +1,5 @@
 (() => {
+    'use strict';
     // PageTypes: watch, channel, browse, search, playlist
 
     function navigateStartBySpfEvent(event) {
