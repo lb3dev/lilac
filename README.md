@@ -7,19 +7,28 @@ Build Notes
 -----
 ### Prerequisties
 
-- NodeJS
-- NPM
+- NodeJS / NPM
 - Firefox Developer Edition
+
+Windows Package Manager (winget)
+```powershell
+winget install --id OpenJS.NodeJS
+winget install --id Mozilla.FirefoxDeveloperEdition
+```
 
 ### Windows 10
 
 Install npm dependencies
 
-``npm ci``
+```powershell
+npm ci
+```
 
 Run extension as temporary with Firefox Developer Edition executable (with specified custom Firefox profile "web-ext"):
 
-``npm start``
+```powershell
+npm run start
+```
 
 Features
 ---------
