@@ -2,20 +2,54 @@
 
 (() => {
     function theaterMode() {
-        let watch = document.querySelector('ytd-watch, ytd-watch-flexy');
-        if (!watch.theaterRequested_) {
-            watch.theaterModeChanged_(true);
+        const watchFlexy = _lilac_listener.getWatchFlexy();
+        if (watchFlexy && !watchFlexy.theaterRequested_) {
+            watchFlexy.theaterModeChanged_(true);
         }
     }
 
-    function watchPage(navigation) {
-        theaterMode();
+    function isHrefInternal(href) {
+        return href.startsWith('/watch');
     }
 
-    document.addEventListener('lilac-ext-navigate', function (event) {
-        let navigation = event.detail;
+    function removeCommentsWithUrls() {
+        _lilac_listener.registerAddListener('YTD-COMMENT-THREAD-RENDERER',
+            (addedNode, mutation) => {
+                return addedNode.tagName === 'YTD-COMMENT-THREAD-RENDERER' || addedNode.tagName === 'YTD-COMMENT-RENDERER';
+            }, (addedNode) => {
+                const commentNode = addedNode;
+                let toFilter = false;
+
+                const spannedComents = commentNode.querySelectorAll('#body #main #expander #content #content-text > .yt-formatted-string');
+                if (spannedComents && spannedComents.length > 0) {
+                    spannedComents.forEach((spannedComment) => {
+                        if (spannedComment.tagName === 'A') {
+                            const href = spannedComment.getAttribute('href');
+                            if (!href) {
+                                spannedComment.parentNode.removeChild(spannedComment);
+                            }
+                            if (href && !isHrefInternal(href)) {
+                                toFilter = true;
+                            }
+                        }
+                    });
+                }
+
+                if (toFilter) {
+                    commentNode.style.display = 'none';
+                }
+            });
+    }
+
+    function watchPage() {
+        theaterMode();
+        removeCommentsWithUrls();
+    }
+
+    document.addEventListener('lilac-navigate-finish', (event) => {
+        const navigation = event.detail;
         if (navigation.pageType === 'watch') {
-            watchPage(navigation);
+            watchPage();
         }
     });
 })();
