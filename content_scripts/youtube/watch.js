@@ -15,7 +15,7 @@
     }
 
     function removeCommentsWithUrls() {
-        _lilac_listener.registerAddListener('YTD-COMMENT-THREAD-RENDERER',
+        _lilac_listener.registerListener('YTD-COMMENT-THREAD-RENDERER',
             (addedNode, mutation) => {
                 return addedNode.tagName === 'YTD-COMMENT-THREAD-RENDERER' || addedNode.tagName === 'YTD-COMMENT-RENDERER';
             }, (addedNode) => {

@@ -4,7 +4,7 @@
     'use strict';
 
     function getChannelNavigateUrl(url, tab) {
-        let paths = url.split('/');
+        const paths = url.split('/');
         if (paths.length === 3) {
             paths.push(tab);
         }
@@ -14,22 +14,30 @@
         return paths.join('/');
     }
     
-    function toVideos(navigation) {
-        let url = navigation.url;
-        let navigateTo = getChannelNavigateUrl(url, 'videos');
-        if ((!navigation.isPrevPageSameType || navigation.visited <= 1) && !url.endsWith('/videos')) {
-            window.spf.navigate(navigateTo);
-        }   
+    function toVideos() {
+        const states = _lilac_navigation.getNavigationStates();
+        if (states.length <= 1) {
+            return;
+        }
+        const prev = states[0];
+        const target = states[1];
+        if (prev.pageType != target.pageType) {
+            const url = target.url;
+            const redirect = getChannelNavigateUrl(url, 'videos');
+            if (!url.endsWith('/videos')) {
+                window.spf.navigate(redirect);
+            }
+        }
     }
 
-    function channelPage(navigation) {
-        // toVideos(navigation);
+    function channelPage() {
+        toVideos();
     }
 
     document.addEventListener('lilac-navigate-finish', (event) => {
         let navigation = event.detail;
         if (navigation.pageType === 'channel') {
-            channelPage(navigation);
+            channelPage();
         }
     });
 })();

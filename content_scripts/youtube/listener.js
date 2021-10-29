@@ -10,12 +10,12 @@ const _lilac_listener = (() => {
     let elementsObserver = null;
     const observerConfig = { attributes: false, childList: true, subtree: true };
 
-    registerAddListener('YTD-WATCH-FLEXY',
-    (addedNode, mutation) => {
-        return addedNode.tagName === 'YTD-WATCH-FLEXY';
-    }, (addedNode) => {
-        watchFlexy = addedNode;
-    });
+    registerListener('YTD-WATCH-FLEXY',
+        (addedNode, mutation) => {
+            return addedNode.tagName === 'YTD-WATCH-FLEXY';
+        }, (addedNode) => {
+            watchFlexy = addedNode;
+        });
 
     const callback = function(mutations, observer) {
         mutations.filter((mutation) => {
@@ -39,7 +39,7 @@ const _lilac_listener = (() => {
         return query ? query : watchFlexy;
     }
 
-    function registerAddListener(key, condition, callback) {
+    function registerListener(key, condition, callback) {
         listeners[key] = {
             test: condition,
             callback: callback
@@ -48,6 +48,6 @@ const _lilac_listener = (() => {
 
     return {
         getWatchFlexy: getWatchFlexy,
-        registerAddListener: registerAddListener
+        registerListener: registerListener
     };
 })();
