@@ -13,7 +13,19 @@
         }
         return paths.join('/');
     }
+
+    function getChannelId(url) {
+        const paths = url.split('/');
+        return paths[2];
+    }
     
+    function redirectToVideos(url) {
+        const redirect = getChannelNavigateUrl(url, 'videos');
+        if (!url.endsWith('/videos')) {
+            window.spf.navigate(redirect);
+        }
+    }
+
     function toVideos() {
         const states = _lilac_navigation.getNavigationStates();
         if (states.length <= 1) {
@@ -21,11 +33,11 @@
         }
         const prev = states[0];
         const target = states[1];
-        if (prev.pageType != target.pageType) {
-            const url = target.url;
-            const redirect = getChannelNavigateUrl(url, 'videos');
-            if (!url.endsWith('/videos')) {
-                window.spf.navigate(redirect);
+        if (prev.pageType !== target.pageType) {
+            redirectToVideos(target.url);
+        } else {
+            if (getChannelId(prev.url) !== getChannelId(target.url)) {
+                redirectToVideos(target.url);
             }
         }
     }
