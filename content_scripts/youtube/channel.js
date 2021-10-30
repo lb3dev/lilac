@@ -28,7 +28,12 @@
 
     function toVideos() {
         const states = _lilac_navigation.getNavigationStates();
-        if (states.length <= 1) {
+        if (states.length < 1) {
+            return;
+        }
+        if (states.length === 1) {
+            const target = states[0];
+            redirectToVideos(target.url);
             return;
         }
         const prev = states[0];
