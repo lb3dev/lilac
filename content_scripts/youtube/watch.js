@@ -11,7 +11,7 @@
     }
 
     function isHrefInternal(href) {
-        return href.startsWith('/watch');
+        return href.startsWith('/watch') || href.startsWith('/channel') || href.startsWith('/user') || href.startsWith('/c');
     }
 
     function removeCommentsWithUrls() {
