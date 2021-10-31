@@ -38,5 +38,7 @@ web-ext sign --config=config.js --api-key=... --api-secret=...
 Features
 ---------
 ### YouTube
-- Navigating to a channel will default to its Videos page
-- Always force Video playback in Theater Mode
+- Redirect to Videos tab when navigating to a channel/user
+- Force player playback in Theater Mode
+- Force player playback quality
+- Filter/remove comments that may contain malicious external URLs from spam

@@ -43,8 +43,36 @@
             });
     }
 
+    function player() {
+        const player = document.getElementById('movie_player');
+
+        // Set playback quality
+        const qualities = ['highres', 'hd2160', 'hd1440', 'hd1080', 'hd720', 'large', 'medium', 'small', 'tiny', 'auto'];
+        const quality = 'hd1440';
+        const availbleQualities = player.getAvailableQualityLevels().reverse();
+        if (availbleQualities.length === 0) {
+            return;
+        }
+        if (availbleQualities.includes(quality)) {
+            player.setPlaybackQuality(quality);
+            player.setPlaybackQualityRange(quality);
+            console.log('Setting playback quality to: ' + quality);
+        } else {
+            let pick = availbleQualities[0];
+            availbleQualities.forEach((availableQuality) => {
+                if (qualities.indexOf(availableQuality) > qualities.indexOf(quality)) {
+                    pick = availableQuality;
+                }
+            });
+            player.setPlaybackQuality(pick);
+            player.setPlaybackQualityRange(pick);
+            console.log('Setting playback quality to: ' + pick);
+        }
+    }
+
     function watchPage() {
         theaterMode();
+        player();
         removeCommentsWithUrls();
     }
 
