@@ -1,9 +1,8 @@
-const _lilac_listener = (() => {
+var _lilac_listener = (() => {
     'use strict';
     
     // App elements
     let watchFlexy = null;
-    let watchCommentsRenderer = null;
 
     const listeners = {};
 
@@ -15,7 +14,8 @@ const _lilac_listener = (() => {
             return addedNode.tagName === 'YTD-WATCH-FLEXY';
         }, (addedNode) => {
             watchFlexy = addedNode;
-        });
+        }
+    );
 
     const callback = function(mutations, observer) {
         mutations.filter((mutation) => {
@@ -39,6 +39,23 @@ const _lilac_listener = (() => {
         return query ? query : watchFlexy;
     }
 
+    function getVideosTab() {
+        return new Promise((resolve, reject) => {
+            function checkVideosTab() {
+                const videosTab = document.querySelector('tp-yt-paper-tab.style-scope:nth-child(4) > div');
+
+                if (!videosTab) {
+                    setTimeout(() => {
+                        checkVideosTab();
+                    }, 100);
+                } else {
+                    resolve(videosTab);
+                }
+            }
+            checkVideosTab();
+        });
+    }
+
     function registerListener(key, condition, callback) {
         listeners[key] = {
             test: condition,
@@ -48,6 +65,7 @@ const _lilac_listener = (() => {
 
     return {
         getWatchFlexy: getWatchFlexy,
+        getVideosTab: getVideosTab,
         registerListener: registerListener
     };
 })();
