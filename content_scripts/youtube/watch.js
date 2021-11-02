@@ -1,6 +1,6 @@
 // Anonymous function invoke to avoid polluting global variable namespace in the original page context
 
-(() => {
+var _lilac_watch = (() => {
     'use strict';
 
     function theaterMode() {
@@ -56,7 +56,6 @@
         if (availbleQualities.includes(quality)) {
             player.setPlaybackQuality(quality);
             player.setPlaybackQualityRange(quality);
-            console.log('Setting playback quality to: ' + quality);
         } else {
             let pick = availbleQualities[0];
             availbleQualities.forEach((availableQuality) => {
@@ -66,7 +65,6 @@
             });
             player.setPlaybackQuality(pick);
             player.setPlaybackQualityRange(pick);
-            console.log('Setting playback quality to: ' + pick);
         }
     }
 
