@@ -3,6 +3,8 @@ Lilac
 
 Lilac is a Firefox Web Extension that provides enhancement to popular video websites
 
+![Lilac Icon](icons/icon_256.png)
+
 Build Notes
 -----
 ### Prerequisties
