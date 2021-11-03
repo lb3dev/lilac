@@ -35,7 +35,11 @@ var _lilac_navigation = (() => {
     }
 
     function navigateEvent(url, pageType, detail, start) {
-        const state = { url: url, pageType: pageType, browseId: getBrowseIdFromEventDetail(detail)};
+        const state = {
+            url: url,
+            pageType: pageType,
+            browseId: getBrowseIdFromEventDetail(detail)
+        };
         const eventName = start ? 'lilac-navigate-start' : 'lilac-navigate-finish';   
 
         if (!start) {
