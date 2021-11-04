@@ -43,10 +43,40 @@ var _lilac_watch = (() => {
             });
     }
 
-    function player() {
-        const player = document.getElementById('movie_player');
+    function updateVolumePercentage(display, storedData, player) {
+        let percentage = 0;
+        if (storedData) {
+            percentage = storedData.muted ? 0 : storedData.volume;
+            display.innerText = percentage + '%';
+        }
+        if (!player.getAttribute('lilac-volume-listener')) {
+            player.setAttribute('lilac-volume-listener', 'true');
+            player.addEventListener('onVolumeChange', (event) => {
+                percentage = event.muted ? 0 : Math.round(event.volume);
+                display.innerText = percentage + '%';
+            }, true);
+        }
+    }
 
-        // Set playback quality
+    function addVolumePercentage() {
+        const player = document.getElementById('movie_player');
+        const playerVolumeStorage = JSON.parse(localStorage['yt-player-volume']);
+        const storedVolumeData = JSON.parse(playerVolumeStorage['data']);
+
+        let volumeDisplay = document.getElementById('lilac_volume_display');
+        if (!volumeDisplay) {
+            _lilac_listener.getPlayerVolume().then((playerVolume) => {
+                playerVolume.insertAdjacentHTML('afterend', '<div id="lilac_volume_display" class="ytp-time-display notranslate"></div>');
+                volumeDisplay = document.getElementById('lilac_volume_display');
+                updateVolumePercentage(volumeDisplay, storedVolumeData, player);
+            });
+        } else {
+            updateVolumePercentage(volumeDisplay, storedVolumeData, player);
+        }
+    }
+
+    function setPlaybackQuality() {
+        const player = document.getElementById('movie_player');
         const qualities = ['highres', 'hd2160', 'hd1440', 'hd1080', 'hd720', 'large', 'medium', 'small', 'tiny', 'auto'];
         const quality = 'hd1440';
         const availbleQualities = player.getAvailableQualityLevels().reverse();
@@ -66,6 +96,11 @@ var _lilac_watch = (() => {
             player.setPlaybackQuality(pick);
             player.setPlaybackQualityRange(pick);
         }
+    }
+
+    function player() {
+        addVolumePercentage();
+        setPlaybackQuality();
     }
 
     function watchPage() {

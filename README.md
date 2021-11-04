@@ -43,4 +43,5 @@ Features
 - Redirect to Videos tab when navigating to a channel/user
 - Force player playback in Theater Mode
 - Force player playback quality
+- Show player volume percentage besides the volume controls
 - Filter/remove comments that may contain malicious external URLs from spam

@@ -3,6 +3,7 @@ var _lilac_listener = (() => {
     
     // App elements
     let watchFlexy = null;
+    let playerVolume = null;
 
     const listeners = {};
 
@@ -14,6 +15,14 @@ var _lilac_listener = (() => {
             return addedNode.tagName === 'YTD-WATCH-FLEXY';
         }, (addedNode) => {
             watchFlexy = addedNode;
+        }
+    );
+
+    registerListener('YTD-PLAYER-VOLUME',
+        (addedNode, mutation) => {
+            return addedNode.tagName === 'SPAN' && addedNode.classList.contains('ytp-volume-area');
+        }, (addedNode) => {
+            playerVolume = addedNode;
         }
     );
 
@@ -37,6 +46,21 @@ var _lilac_listener = (() => {
     function getWatchFlexy() {
         const query = document.querySelector('ytd-watch, ytd-watch-flexy');
         return query ? query : watchFlexy;
+    }
+
+    function getPlayerVolume() {
+        return new Promise((resolve, reject) => {
+            function checkPlayerVolume() {
+                if (playerVolume) {
+                    resolve(playerVolume);
+                } else {
+                    setTimeout(() => {
+                        checkPlayerVolume();
+                    }, 100);
+                }
+            }
+            checkPlayerVolume();
+        });
     }
 
     function getVideosTab() {
@@ -65,6 +89,7 @@ var _lilac_listener = (() => {
 
     return {
         getWatchFlexy: getWatchFlexy,
+        getPlayerVolume: getPlayerVolume,
         getVideosTab: getVideosTab,
         registerListener: registerListener
     };
