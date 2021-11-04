@@ -9,8 +9,10 @@ var _lilac_channel = (() => {
             if (states.length < 1) {
                 return;
             }
-            if (states.length === 1 && !states[0].url.endsWith('/videos')) {
-                videosTab.click();
+            if (states.length === 1) {
+                if (!states[0].url.endsWith('/videos')) {
+                    videosTab.click();
+                }
                 return;
             }
             const prev = states[0];
