@@ -4,10 +4,11 @@ var _lilac_watch = (() => {
     'use strict';
 
     function theaterMode() {
-        const watchFlexy = _lilac_listener.getWatchFlexy();
-        if (watchFlexy && !watchFlexy.theaterRequested_) {
-            watchFlexy.theaterModeChanged_(true);
-        }
+        _lilac_listener.getAppElement('YTD-WATCH-FLEXY').then((watchFlexy) => {
+            if (watchFlexy && !watchFlexy.theaterRequested_) {
+                watchFlexy.theaterModeChanged_(true);
+            }
+        });
     }
 
     function isHrefInternal(href) {
@@ -16,31 +17,31 @@ var _lilac_watch = (() => {
 
     function removeCommentsWithUrls() {
         _lilac_listener.registerListener('YTD-COMMENT-THREAD-RENDERER',
-            (addedNode, mutation) => {
-                return addedNode.tagName === 'YTD-COMMENT-THREAD-RENDERER' || addedNode.tagName === 'YTD-COMMENT-RENDERER';
-            }, (addedNode) => {
-                const commentNode = addedNode;
-                let toFilter = false;
-
-                const spannedComents = commentNode.querySelectorAll('#body #main #expander #content #content-text > .yt-formatted-string');
-                if (spannedComents && spannedComents.length > 0) {
-                    spannedComents.forEach((spannedComment) => {
-                        if (spannedComment.tagName === 'A') {
-                            const href = spannedComment.getAttribute('href');
-                            if (!href) {
-                                spannedComment.parentNode.removeChild(spannedComment);
-                            }
-                            if (href && !isHrefInternal(href)) {
-                                toFilter = true;
-                            }
+        (addedNode, mutation) => {
+            return addedNode.tagName === 'YTD-COMMENT-THREAD-RENDERER' || addedNode.tagName === 'YTD-COMMENT-RENDERER';
+        }, (addedNode) => {
+            const commentNode = addedNode;
+            let toFilter = false;
+            
+            const spannedComents = commentNode.querySelectorAll('#body #main #expander #content #content-text > .yt-formatted-string');
+            if (spannedComents && spannedComents.length > 0) {
+                spannedComents.forEach((spannedComment) => {
+                    if (spannedComment.tagName === 'A') {
+                        const href = spannedComment.getAttribute('href');
+                        if (!href) {
+                            spannedComment.parentNode.removeChild(spannedComment);
                         }
-                    });
-                }
-
-                if (toFilter) {
-                    commentNode.style.display = 'none';
-                }
-            });
+                        if (href && !isHrefInternal(href)) {
+                            toFilter = true;
+                        }
+                    }
+                });
+            }
+            
+            if (toFilter) {
+                commentNode.style.display = 'none';
+            }
+        });
     }
 
     function updateVolumePercentage(display, storedData, player) {
@@ -65,7 +66,7 @@ var _lilac_watch = (() => {
 
         let volumeDisplay = document.getElementById('lilac_volume_display');
         if (!volumeDisplay) {
-            _lilac_listener.getPlayerVolume().then((playerVolume) => {
+            _lilac_listener.getAppElement('YTD-PLAYER-VOLUME').then((playerVolume) => {
                 playerVolume.insertAdjacentHTML('afterend', '<div id="lilac_volume_display" class="ytp-time-display notranslate"></div>');
                 volumeDisplay = document.getElementById('lilac_volume_display');
                 updateVolumePercentage(volumeDisplay, storedVolumeData, player);
@@ -73,6 +74,12 @@ var _lilac_watch = (() => {
         } else {
             updateVolumePercentage(volumeDisplay, storedVolumeData, player);
         }
+    }
+    
+    function removeMiniPlayerButton() {
+        _lilac_listener.getAppElement('YTD-PLAYER-MINI-PLAYER').then((miniPlayer) => {
+            miniPlayer.style.display = 'none';
+        });
     }
 
     function setPlaybackQuality() {
@@ -100,6 +107,7 @@ var _lilac_watch = (() => {
 
     function player() {
         addVolumePercentage();
+        removeMiniPlayerButton();
         setPlaybackQuality();
     }
 

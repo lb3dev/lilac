@@ -2,8 +2,7 @@ var _lilac_listener = (() => {
     'use strict';
     
     // App elements
-    let watchFlexy = null;
-    let playerVolume = null;
+    const elements = {};
 
     const listeners = {};
 
@@ -14,7 +13,7 @@ var _lilac_listener = (() => {
         (addedNode, mutation) => {
             return addedNode.tagName === 'YTD-WATCH-FLEXY';
         }, (addedNode) => {
-            watchFlexy = addedNode;
+            elements['YTD-WATCH-FLEXY'] = addedNode;
         }
     );
 
@@ -22,7 +21,15 @@ var _lilac_listener = (() => {
         (addedNode, mutation) => {
             return addedNode.tagName === 'SPAN' && addedNode.classList.contains('ytp-volume-area');
         }, (addedNode) => {
-            playerVolume = addedNode;
+            elements['YTD-PLAYER-VOLUME'] = addedNode;
+        }
+    );
+
+    registerListener('YTD-PLAYER-MINI-PLAYER',
+        (addedNode, mutation) => {
+            return addedNode.tagName === 'BUTTON' && addedNode.classList.contains('ytp-miniplayer-button');
+        }, (addedNode) => {
+            elements['YTD-PLAYER-MINI-PLAYER'] = addedNode;
         }
     );
 
@@ -43,23 +50,18 @@ var _lilac_listener = (() => {
     elementsObserver = new MutationObserver(callback);
     elementsObserver.observe(document, observerConfig);
 
-    function getWatchFlexy() {
-        const query = document.querySelector('ytd-watch, ytd-watch-flexy');
-        return query ? query : watchFlexy;
-    }
-
-    function getPlayerVolume() {
+    function getAppElement(key) {
         return new Promise((resolve, reject) => {
-            function checkPlayerVolume() {
-                if (playerVolume) {
-                    resolve(playerVolume);
+            function checkAppElement() {
+                if (elements[key]) {
+                    resolve(elements[key]);
                 } else {
                     setTimeout(() => {
-                        checkPlayerVolume();
+                        checkAppElement();
                     }, 100);
                 }
             }
-            checkPlayerVolume();
+            checkAppElement();
         });
     }
 
@@ -88,8 +90,7 @@ var _lilac_listener = (() => {
     }
 
     return {
-        getWatchFlexy: getWatchFlexy,
-        getPlayerVolume: getPlayerVolume,
+        getAppElement: getAppElement,
         getVideosTab: getVideosTab,
         registerListener: registerListener
     };
